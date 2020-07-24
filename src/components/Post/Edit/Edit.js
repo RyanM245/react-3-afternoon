@@ -12,21 +12,21 @@ export default class Edit extends Component {
       text: props.text
     };
 
-    this.updatePost = this.updatePost.bind( this );
+    // this.updatePost = this.updatePost.bind( this );
   }
 
   updateText( value ) {
     this.setState({ text: value });
   }
 
-  updatePost() {
-
-  }
+  
 
   render() {
     // More destructuring!
     const { hideEdit } = this.props;
     const { text } = this.state;
+// console.log(this.props.id)
+// console.log(this.props.text)
 
     return (
       <section className="Edit__parent">
@@ -38,7 +38,10 @@ export default class Edit extends Component {
           {/* This saves your changes made */}
           <button id="Edit__controls-update" 
                   className="Edit__control-btn"
-                  onClick={ this.updatePost }>
+                  onClick={ ()=>{
+                    this.props.updatePostFn(this.props.id, this.state.text)
+                    this.props.hideEdit()
+                  } }>
             Update
           </button>
 
