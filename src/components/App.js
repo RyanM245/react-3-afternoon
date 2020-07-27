@@ -19,10 +19,10 @@ class App extends Component {
     this.deletePost = this.deletePost.bind( this );
     this.createPost = this.createPost.bind( this );
   }
-  
   componentDidMount() {
     Axios.get("https://practiceapi.devmountain.com/api/posts")
     .then( res => {
+      // console.log(res.data)
       this.setState({posts: res.data})
     })
 
@@ -32,17 +32,22 @@ class App extends Component {
     console.log(id,text)
   Axios.put(`https://practiceapi.devmountain.com/api/posts?id=${id}`, {text})
   .then (res => {
-    console.log(res.data)
+    // console.log(res.data)
     this.setState({posts: res.data})
   })
   }
 
-  deletePost() {
-
+  deletePost(id) {
+    Axios.delete(`https://practiceapi.devmountain.com/api/posts?id=${id}`)
+    .then (res => {
+      // console.log(res.data)
+      this.setState({posts:res.data})})
   }
 
-  createPost() {
-
+  createPost(text) {
+    Axios.post(`https://practiceapi.devmountain.com/api/posts`, {text})
+    .then (res => {
+      this.setState({posts: res.data})})
   }
 
   render() {
@@ -54,14 +59,15 @@ class App extends Component {
 
         <section className="App__content">
 
-          <Compose />
+          <Compose createPost={ this.createPost } />
 
           {posts.map( post => (
             <Post key={ post.id } 
             text = {post.text} 
             date = {post.date}
             updatePostFn = { this.updatePost}
-            id = {post.id}/>
+            id = {post.id}
+            deletePost = {this.deletePost}/>
            ))
           }
           
